@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+    models.user.hasMany(models.individual_image)
+    models.user.belongsToMany(models.image, {through:'individual_image'})
     }
   };
   user.init({
