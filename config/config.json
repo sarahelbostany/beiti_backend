@@ -5,3 +5,15 @@
     "dialect": "postgres"
   }
 }
+{
+  "production": {
+    "use_env_variable": "beiti_db",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}

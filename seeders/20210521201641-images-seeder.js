@@ -3,12 +3,10 @@
 const imageArray = []
 
 class Image {
-    constructor(image,category){
+    constructor(image){
         this.image = image,
-       
         this.createdAt = new Date(),
         this.updatedAt = new Date()
-
         imageArray.push(this)
     }
 }
@@ -78,14 +76,15 @@ new Image('https://i.pinimg.com/236x/b0/02/44/b00244f1e855c479b38c94dc2b9bd19d.j
 
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('images',
-     imageArray
-     , {});
+  up: async (queryInterface, Sequelize) =>
+   {
+    // await queryInterface.bulkInsert('images',
+    //  imageArray
+    //  , {});
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('images', null, {});
+    // await queryInterface.bulkDelete('images', null, {});
 
   }
 };
