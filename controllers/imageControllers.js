@@ -7,12 +7,13 @@ const imageControllers = {}
 
 //get all images
 imageControllers.index = async (req, res) => {
-    console.log('backend', req.params)
+    console.log('get all images')
     try {
         const images = await models.image.findAll()
 
 
         res.json((images))
+        console.log(images)
     }catch (error) {
         console.log(error);
         res.status(400).json({ error: error.mesaage })
@@ -23,21 +24,28 @@ imageControllers.index = async (req, res) => {
 //add image to user profile
 imageControllers.save = async (req, res) => {
     try {
-        const user = await models.user.findOne({
-            where: {
-                id: req.headers.authorization
-            }
-        })
-        console.log(user)
+        // const user = await models.user.findOne({
+        //     where: {
+        //         id: req.headers.authorization
+        //     }
+        // })
+        // console.log('add imagae to user', user)
         const favImage = await models.image.findOne({
             where: {
                 id: req.body.id
             }
         })
         console.log('fav image req', favImage);
-        // console.log('favIdea', favIdea);
         // console.log(user);
-        await user.addImage(favImage)
+        await models.individual_image.findOrCreate(
+            {
+                where: {
+                    userId: req.headers.authorization,
+                    imageId: req.body.id
+                }
+            }
+
+        )
         res.json({favImage})
     } catch (error) {
         console.log(error);
@@ -46,23 +54,29 @@ imageControllers.save = async (req, res) => {
 }
 
 
-// //get saved images and post to dahsboard
-// imageControllers.fetchImage = async (req, res) => {
-//     try {
-//         const images = await models.user.findOne({
-//             where: {
-//                 id: req.headers.authorization
-//             }
-//         })
+//get saved images and post to dahsboard --> similar to index
+imageControllers.dashboardImage = async (req, res) => {
+    console.log('SHOW ROUTE')
+    try {
+        const getAllImages = await models.individual_images.findAll({
+            where: {
+                userId: req.headers.authorization
+            }
+        })
+        console.log('get all images backend', getAllImages)
 
-//         const savedImage = await user.getImages()
-//         res.json((images))
+        const savedImage = await models.images.findAll({
+            where: {
+                id
+            }
+        })
+        res.json((images))
 
-//     }catch (error) {
-//         console.log(error);
-//         res.status(400).json({ error: error.mesaage })
-//     }
-// }
+    }catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.mesaage })
+    }
+}
 
 
 
