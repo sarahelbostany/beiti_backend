@@ -32,7 +32,7 @@ imageControllers.save = async (req, res) => {
         // console.log('add imagae to user', user)
         const favImage = await models.image.findOne({
             where: {
-                id: req.body.id
+                id: req.body.imageId
             }
         })
         console.log('fav image req', favImage);
@@ -41,7 +41,7 @@ imageControllers.save = async (req, res) => {
             {
                 where: {
                     userId: req.headers.authorization,
-                    imageId: req.body.id
+                    imageId: req.body.imageId
                 }
             }
 
@@ -58,19 +58,19 @@ imageControllers.save = async (req, res) => {
 imageControllers.dashboardImage = async (req, res) => {
     console.log('SHOW ROUTE')
     try {
-        const getAllImages = await models.individual_images.findAll({
+        console.log(req.headers.authorization)
+        const user = await models.user.findOne({
             where: {
-                userId: req.headers.authorization
+                id: req.headers.authorization
             }
         })
-        console.log('get all images backend', getAllImages)
 
-        const savedImage = await models.images.findAll({
-            where: {
-                id
-            }
-        })
-        res.json((images))
+
+
+        const savedImage = await user.getImages()
+        console.log(savedImage)
+        res.json({savedImage})
+
 
     }catch (error) {
         console.log(error);
